@@ -10,11 +10,12 @@ export class ChatQuestions {
     }
   
     isFirst(){
-      return this.id = 0
+      return this.id =0
     }
   
     getCurrentQuestionId(){
-      return this.id + 1
+      //return this.id + 1
+      return this.id
     }
   
     isNext(answer){
@@ -41,12 +42,13 @@ export class ChatQuestions {
     }
   
     validate(answer){
+      var answer_lower = answer.toLowerCase();
       if(typeof this.questions[this.id].validation === 'boolean'){
         return this.questions[this.id].validation
       }
   
       if(Array.isArray(this.questions[this.id].validation)){
-        console.log(answer.toLowerCase());
+        console.log('answer_lower=' + answer_lower);
         console.log('this:' + this)
         return this.questions[this.id].validation.includes(answer)
       }
@@ -58,4 +60,10 @@ export class ChatQuestions {
   
       return false
     }
+
+    getQuestion(id){
+      return this.questions[id].question;
+    }
+
+
   }

@@ -11,7 +11,7 @@ const initialState = {
   "isTyping": false,
   "isPatient": false,
   "isConnected": false,
-  "sessionkey" : 0
+  "showOnBoardingMessage" : false
 }
 
 let store = createStore(reducer, compose(reduxBatch, applyMiddleware(ReduxThunk), reduxBatch, applyMiddleware(ReduxThunk), reduxBatch))

@@ -90,6 +90,8 @@ class OnBoardingView(generics.ListCreateAPIView):
     queryset = UserOnboardingInformation.objects.filter(Skey=latest_skey).order_by('QuestionID')
     serializer_class = UserOnBoardingSerilizer
 
+
+
     def perform_create(self, serializer):
         """Save the post data when creating a new bucketlist."""
         serializer.save()

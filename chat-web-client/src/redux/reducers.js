@@ -55,7 +55,7 @@ function connectionReducer(state=false, action){
   }
 }
 
-//function nameReducer(state="Rachel Green", action){
+
   function nameReducer(state="Cerebral vRep", action){
   
   switch(action.type){
@@ -66,11 +66,23 @@ function connectionReducer(state=false, action){
   }
 }
 
+function showOnboardReducers(state=false,action){
+  switch(action.type){
+    case 'SHOW':
+      return true;
+    case 'HIDE':
+      return false;
+    default:
+      return false
+  }
+}
+
 export default combineReducers({
   questions: questionsReducer,
   answers: answersReducer,
   isTyping: typingReducer,
   isPatient: patientReducer,
   isConnected: connectionReducer,
-  name: nameReducer
+  name: nameReducer,
+  showOnBoardingMessage :showOnboardReducers,
 })

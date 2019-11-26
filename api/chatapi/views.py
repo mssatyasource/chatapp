@@ -22,11 +22,15 @@ import os
 
 
 
+"""
+ a function to generate unique Session key
+ it read the maximum SKey from table and return the next one.
 
+"""
 def GetNextSessionKey():
     nextid = 0
     try:
-        nextid = UserOnboardingInformation.objects.latest('Id').Id
+        nextid = UserOnboardingInformation.objects.latest('Skey').Skey
         nextid += 1
         return nextid
     except Exception as Error:
@@ -34,7 +38,9 @@ def GetNextSessionKey():
 
     return nextid
 
-
+"""
+function to read the chat questions from the json file
+"""
 def ReadChatQuestins():
     data = None
     try:
@@ -49,15 +55,16 @@ def ReadChatQuestins():
     return data
 
 
-
+"""
+View to retrun the chat qustions list of questions from json file
+supports Options and get
+"""
 class ChatQuestionsView(APIView):
     #http_method_names = ['get']
 
     def options(self, request, *args, **kwargs):
         data = ReadChatQuestins()
         return Response(data)
-
-
 
     def get(self, request, format=None):
         data = ReadChatQuestins()
@@ -67,7 +74,10 @@ class ChatQuestionsView(APIView):
 
 
 
-# view  to get the unique session key for each conversasation
+"""
+View to return the new session key
+methods supported : get
+"""
 class SessionKeyView(APIView):
 
     def post(self, request, format=None):
@@ -78,7 +88,11 @@ class SessionKeyView(APIView):
         return Response(data)
 
 
-
+"""
+Onboarding view
+ get will return the list of all the questions and answers for the most recent session.
+ Post will save the user qustions and answer in the database
+"""
 
 class OnBoardingView(generics.ListCreateAPIView):
     """This class defines the create behavior of our rest api."""
@@ -95,9 +109,4 @@ class OnBoardingView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         """Save the post data when creating a new bucketlist."""
         serializer.save()
-
-
-
-
-
 

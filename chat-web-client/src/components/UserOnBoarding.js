@@ -14,14 +14,15 @@ import { List, Image, Ref } from 'semantic-ui-react'
 import { isDecorator, thisTypeAnnotation } from '@babel/types'
 
 
+
 const SERVER_BASE_URL = "http://127.0.0.1:8000"
 
 
 const urlToNewSessionKey = SERVER_BASE_URL + '/sessionkeyview/'
 const urlToGetOnboadringInformation = SERVER_BASE_URL + '/onboardingview/'
 
-const getSessionPromise = fetch(urlToNewSessionKey);
-const getOnBoardingQuestionsPromise = fetch(urlToGetOnboadringInformation)
+
+
 
 const urlToChatQuestions = SERVER_BASE_URL + '/chatquestionsview/'
 
@@ -73,20 +74,46 @@ export default class UserOnBoarding extends React.Component {
   }
 
 
-  initNewSession(){
-    getSessionPromise.then()
-
-  }
-
+  
   
 
   buildOnboardingMessage = ()=> {
+
+   
+
+
+
+
+    fetch(urlToGetOnboadringInformation).then(response => response.json().then( data => {
+      for(var i=0;i<data.length;i++){
+        var obj = data[i]
+        obj.Question = gen.getQuestion(obj.QuestionID)
+        console.log('var quesstr=' + obj.Question)
+      }
+      onBoardingList = data
+     this.setState({
+      showUserOnBoardings : true
+    })
+
+    })
+
+    )
+    /*
+    fetch(url).then(response => 
+    response.json().then(data => ({
+        data: data,
+        status: response.status
+    })
+).then(res => {
+    console.log(res.status, res.data.title)
+}));
+    
 
 
     
 
     getOnBoardingQuestionsPromise.then(response => {
-      return response.json()
+       return response.json()
     })
     .then(data => {
       console.log(data)
@@ -102,29 +129,61 @@ export default class UserOnBoarding extends React.Component {
     })
      
     })
+    */
    
     
 
     
   }
 
-  getOnBoardingData(){
-    getOnBoardingQuestionsPromise.then(response => {
-      return response.json()
-    })
-    .then(data => {
-      console.log(data)
-     for(var i = 0;i<data.length-1;i++){
-       var obj = data[i]
-       obj.Question = gen.getQuestion(obj.QuestionID)
-       console.log('QID='+ obj.QuestionID + "Question=" + obj.Question)
-     }
-     return data
+
+  clearOnBoardingMessage = () => {
+
+    this.setState({
+      showUserOnBoardings : false
+
     })
 
   }
 
+  
 
+
+  renderOnboarding2 =( ) =>{
+
+    var name =''
+    for (let i = 0; i < onBoardingList.length; i++) {
+      var data = onBoardingList[i]
+      if( data.QuestionID == 4){
+        name = data.Answer;
+        break;
+      }
+    }
+
+    if( name != ''){
+      name = name + ' : OnBoarding Information'
+    }
+
+    const questionAnswers = onBoardingList.map( obj =>(
+      <div key={obj.Id}>
+        <a> <b>{obj.Question}</b></a> <br></br>
+        &nbsp;&nbsp;<a>{obj.Answer} </a>
+      </div>
+    ));
+
+    return (
+        <div>
+          <a><b>{name} </b></a> <button onClick={this.clearOnBoardingMessage}>X</button> 
+          <br></br><br></br>
+          {questionAnswers}
+        </div>
+    )
+   
+    return questionAnswers
+
+  }
+
+  /*
    renderOnBoarding = () => {
     let table = []
 
@@ -135,12 +194,14 @@ export default class UserOnBoarding extends React.Component {
       children.push(<td>{data.Question }</td>)
       children.push(<td>{data.Answer }</td>)
       console.log('Q = ' + data.Question + 'A=' + data.Answer)
+      console.log( "id =" + data.Id)
       table.push(<tr key={data.Id}>{children}</tr>)
     }
     return table
     
    
   }
+  */
 
   
 
@@ -149,7 +210,7 @@ export default class UserOnBoarding extends React.Component {
   componentDidMount(){
 
     // 1. Get unique session key from server
-    getSessionPromise.then(response=>response.json()).then(data=>{ console.log('data from session' + data); 
+    fetch(urlToNewSessionKey).then(response=>response.json()).then(data=>{ console.log('data from session' + data); 
     sessionkey = data
     })
 
@@ -243,20 +304,15 @@ export default class UserOnBoarding extends React.Component {
         </List>
         <p>{isTyping ? 'typing...' : ''}</p>
         {isPatient && !isConnected && <button onClick={this.connect}>Connect To Doctor</button> }
-        {<button onClick={this.showOnBoarding}>Show Messages To Doctor</button> }
+        {<button onClick={this.showOnBoarding}>Show Chat output</button> }
        <Form onMessage={this.addMessage}/>
 
        <div>
          {this.state.showUserOnBoardings ?
         <div>
-        <table > 
-        <tr>
-        <th>Question</th>
-        <th>ANswer</th>
-  </tr>
-        {this.renderOnBoarding()}
-        </table>
+        {this.renderOnboarding2()}
         </div>
+        
          : null
          }
        </div>

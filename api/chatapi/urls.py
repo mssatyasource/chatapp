@@ -9,9 +9,6 @@ urlpatterns = {
     url(r'^sessionkeyview/$', SessionKeyView.as_view(), name="sessionkey"),
     url(r'^chatquestionsview/$', ChatQuestionsView.as_view(), name="questions"),
 
-
-
-
 }
 
 urlpatterns = format_suffix_patterns(urlpatterns)

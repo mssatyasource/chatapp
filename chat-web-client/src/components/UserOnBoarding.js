@@ -249,7 +249,11 @@ export default class UserOnBoarding extends React.Component {
        <div>
          {this.state.showUserOnBoardings ?
         <div>
-        <table>
+        <table > 
+        <tr>
+        <th>Question</th>
+        <th>ANswer</th>
+  </tr>
         {this.renderOnBoarding()}
         </table>
         </div>

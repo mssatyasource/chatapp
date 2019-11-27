@@ -95,7 +95,7 @@ Onboarding view
 """
 
 class OnBoardingView(generics.ListCreateAPIView):
-    """This class defines the create behavior of our rest api."""
+
     latest_skey = 0
     try:
         latest_skey = UserOnboardingInformation.objects.latest('Skey').Skey
@@ -107,6 +107,6 @@ class OnBoardingView(generics.ListCreateAPIView):
 
 
     def perform_create(self, serializer):
-        """Save the post data when creating a new bucketlist."""
+        """Save the post data the user response for one question"""
         serializer.save()
 

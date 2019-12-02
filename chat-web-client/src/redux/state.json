@@ -1,0 +1,9 @@
+{
+    "questions":[],
+    "answers": [],
+    "isTyping": "boolean",
+    "isPatient": "boolean",
+    "isConnected": "boolean",
+    "showOnBoardingMessage" : "boolean"
+  }
+  
